@@ -1,9 +1,10 @@
 //importe  de express tradicional:
 // const express= require('express')
 
-import Express  from "express";
+import Express, { response }  from "express";
 import { MongoClient } from "mongodb";
 import Cors from 'cors'
+import { ObjectId } from "bson";
 
 
 const stringConexion= "mongodb+srv://juandiego1628:16281530@proyectoapp.tv3zk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -64,6 +65,38 @@ app.post("/ventas/nueva",(req,res)=>{
        
     
 });
+
+app.patch("/ventas/editar",(req, res)=>{
+    const edicion=req.body;
+    const idactualizar={_id:new ObjectId(edicion.id)}
+    delete edicion.id;
+    const operacion={
+        $set:edicion
+    }
+    conexion.collection("ventas").findOneAndUpdate(idactualizar,operacion,{upsert:true,returnOrignal:true},(err,result)=>{
+        if(err){
+            console.error("Error actualizando el vehiculo",err)
+            res.sendStatus(500);
+        }else{
+            console.log(result)
+            res.sendStatus(200)
+        }
+    })
+
+});
+
+app.delete('/ventas/eliminar',(req,res)=>{
+    const filtroVenta={_id:new ObjectId(req.body.id)}
+    conexion.collection("ventas").deleteOne(filtroVenta,(err,result)=>{
+        if(err){
+            console.error("Error eliminado",err);
+            res.sendStatus(500)
+        }else{
+            console.log("Eliminado con exito")
+            res.sendStatus(200)
+        }
+    })
+})
 
 const main=()=>{
    client.connect((err,db)=>{
