@@ -5,9 +5,13 @@ import Express, { response }  from "express";
 import { MongoClient } from "mongodb";
 import Cors from 'cors'
 import { ObjectId } from "bson";
+import dotenv from "dotenv";
 
 
-const stringConexion= "mongodb+srv://juandiego1628:16281530@proyectoapp.tv3zk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+dotenv.config({path:'./.env'});
+
+
+const stringConexion= process.env.DATABASE_URL;
 const client= new MongoClient(stringConexion,{
     useNewUrlParser:true,
     useUnifiedTopology:true
@@ -274,8 +278,8 @@ const main=()=>{
         }
         conexion=db.db("Pioneros");
         console.log("conexion existosa")
-        return app.listen(5000,()=>{
-            console.log("Escuchando el puerto 5000")
+        return app.listen(process.env.PORT,()=>{
+            console.log(`Escuchando el puerto ${process.env.PORT}`)
    });
  })
     
