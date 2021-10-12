@@ -2,28 +2,20 @@
 // const express= require('express')
 
 import Express, { response }  from "express";
-import { MongoClient } from "mongodb";
 import Cors from 'cors'
 import { ObjectId } from "bson";
 import dotenv from "dotenv";
-
-
+import {conexionBD,getDB} from './db/db.js';
 dotenv.config({path:'./.env'});
 
-
-const stringConexion= process.env.DATABASE_URL;
-const client= new MongoClient(stringConexion,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-})
-
-let conexion;
 const app=Express();
 app.use(Express.json());
 app.use(Cors());
 
+ 
 //Rutas Ventas
 app.get("/ventas",(req,res)=>{
+    const conexion=getDB()    
     console.log("alguien hizo get en la ruta /ventas")
     
     conexion.collection("ventas").find({}).limit(50).toArray((err,result)=>{
@@ -36,6 +28,7 @@ app.get("/ventas",(req,res)=>{
 });
 
 app.post("/ventas/nueva",(req,res)=>{
+    const conexion=getDB()
     const datosventas=req.body;
     console.log("llaves: ", Object.keys(datosventas))
     try{
@@ -72,6 +65,7 @@ app.post("/ventas/nueva",(req,res)=>{
 });
 
 app.patch("/ventas/editar",(req, res)=>{
+    const conexion=getDB()
     const edicion=req.body;
     const idactualizar={_id:new ObjectId(edicion.id)}
     delete edicion.id;
@@ -93,6 +87,7 @@ app.patch("/ventas/editar",(req, res)=>{
 
 
 app.delete('/ventas/eliminar',(req,res)=>{
+    const conexion=getDB()
     const filtroVenta={_id:new ObjectId(req.body.id)}
     conexion.collection("ventas").deleteOne(filtroVenta,(err,result)=>{
         if(err){
@@ -108,6 +103,7 @@ app.delete('/ventas/eliminar',(req,res)=>{
 //Rutas Usuarios
 
 app.get("/usuarios",(req,res)=>{
+    const conexion=getDB()
     console.log("alguien hizo get en la ruta /usuarios")
     conexion.collection("usuarios").find({}).limit(50).toArray((err,result)=>{
         if(err){
@@ -119,6 +115,7 @@ app.get("/usuarios",(req,res)=>{
     
 });
 app.post("/usuarios/nuevo",(req,res)=>{
+    const conexion=getDB()
     const datosusuarios=req.body;
     console.log("llaves: ", Object.keys(datosusuarios))
     try{
@@ -155,6 +152,7 @@ app.post("/usuarios/nuevo",(req,res)=>{
 });
 
 app.patch("/usuarios/editar",(req, res)=>{
+    const conexion=getDB()
     const edicion1=req.body;
     const idactualizar={_id:new ObjectId(edicion1.id)}
     delete edicion1.id;
@@ -174,6 +172,7 @@ app.patch("/usuarios/editar",(req, res)=>{
 });
 
 app.delete('/usuarios/eliminar',(req,res)=>{
+    const conexion=getDB()
     const filtroUsuario={_id:new ObjectId(req.body.id)}
     conexion.collection("usuarios").deleteOne(filtroUsuario,(err,result)=>{
         if(err){
@@ -268,20 +267,10 @@ app.delete('/productos/eliminar',(req,res)=>{
 })
 
 
-
-
-
 const main=()=>{
-   client.connect((err,db)=>{
-        if(err){
-            console.error("error al conectar  la base de datos")
-        }
-        conexion=db.db("Pioneros");
-        console.log("conexion existosa")
-        return app.listen(process.env.PORT,()=>{
-            console.log(`Escuchando el puerto ${process.env.PORT}`)
+  return app.listen(process.env.PORT,()=>{
+     console.log(`Escuchando el puerto ${process.env.PORT}`)
    });
- })
-    
+     
 };
-main();
+conexionBD(main);
