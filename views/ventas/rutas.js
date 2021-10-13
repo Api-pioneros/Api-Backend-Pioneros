@@ -23,20 +23,20 @@ rutasVentas.route("/ventas").get((req,res)=>{
     queryAllVentas(genericCallBack(res));
 });
 
-rutasVentas.route("/ventas").post((req,res)=>{
+rutasVentas.route("/ventas/nueva").post((req,res)=>{
     console.log("Entro aqui")
     crearVenta(req.body,genericCallBack(res));    
     
 });
 
-rutasVentas.route("/ventas/:id").patch((req, res)=>{
-    editarVenta(req.params.id,req.body,genericCallBack(res));
+rutasVentas.route("/ventas/editar").patch((req, res)=>{
+    editarVenta(req.body.id,genericCallBack(res));
 
 });
 
 
-rutasVentas.route('/ventas/:id').delete((req,res)=>{
- eliminarventa(req.params.id,genericCallBack(res));
+rutasVentas.route('/ventas/eliminar').delete((req,res)=>{
+ eliminarventa(req.body.id,genericCallBack(res));
 })
 
 export default rutasVentas;
