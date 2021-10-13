@@ -30,10 +30,9 @@ const crearVenta = async(datosventas, callback) => {
     
 };
 
-const editarVenta= async(edicion,callback)=>{
+const editarVenta= async(id,edicion,callback)=>{
     const conexion=getDB()
-    const idactualizar={_id:new ObjectId(edicion.id)}
-    delete edicion.id;
+    const idactualizar={_id:new ObjectId(id)}
     const operacion={
         $set:edicion
     }
