@@ -1,11 +1,10 @@
 //importe  de express tradicional:
 // const express= require('express')
 
-import Express, { response }  from "express";
+import Express from "express";
 import Cors from 'cors'
-import { ObjectId } from "bson";
 import dotenv from "dotenv";
-import {conexionBD,getDB} from './db/db.js';
+import {conexionBD} from './db/db.js';
 import rutasVentas from "./views/ventas/rutas.js";
 import rutasUsuarios from "./views/Usuarios/rutas.js";
 import rutasProductos from "./views/productos/ruta.js";

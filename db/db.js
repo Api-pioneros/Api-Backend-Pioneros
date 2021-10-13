@@ -23,6 +23,6 @@ const conexionBD=(callback)=>{
 };
 
 const getDB=()=>{
-    return conexion
+    return conexion;
 }
 export {conexionBD, getDB};
