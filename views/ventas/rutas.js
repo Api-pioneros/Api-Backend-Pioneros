@@ -1,6 +1,6 @@
 import Express from 'express';
 import { queryAllVentas, crearVenta, editarVenta, eliminarventa } from '../../controllers/ventas/controller.js';
-import {getDB} from '../../db/db.js';
+
 
 const rutasVentas= Express.Router();
 
