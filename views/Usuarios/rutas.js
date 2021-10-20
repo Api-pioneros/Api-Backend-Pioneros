@@ -1,6 +1,6 @@
 import Express from 'express';
-import { crearUsuario, editarUsuario, queryAllUsuarios ,eliminarUsuario} from '../../controllers/usuarios/controller.js';
-import {getDB} from '../../db/db.js'
+import { crearUsuario, editarUsuario, queryAllUsuarios ,eliminarUsuario, consultarOCrearUsuario} from '../../controllers/usuarios/controller.js';
+
 
 const rutasUsuarios=Express.Router();
 const genericCallBack=(res)=>{
@@ -18,7 +18,6 @@ const genericCallBack=(res)=>{
 
 
 rutasUsuarios.route("/usuarios").get((req,res)=>{
-    const conexion=getDB()
     console.log("alguien hizo get en la ruta /usuarios")
     queryAllUsuarios(genericCallBack(res))     
 });
@@ -26,6 +25,11 @@ rutasUsuarios.route("/usuarios").get((req,res)=>{
 rutasUsuarios.route("/usuarios").post((req,res)=>{
     console.log("Entro aqui")
     crearUsuario(req.body,genericCallBack(res));   
+});
+
+rutasUsuarios.route("/usuarios/self").get((req,res)=>{
+    console.log("alguien hizo get en la ruta /self")
+    consultarOCrearUsuario(req,genericCallBack(res))     
 });
 
 rutasUsuarios.route("/usuarios/:id").patch((req, res)=>{

@@ -27,6 +27,8 @@ audience: 'Backend-Api-Autenticacion-Pioneros-Misiontic',
 issuer: 'https://misiontic-pioneros.us.auth0.com/',
 algorithms: ['RS256']
 });
+// 4 y 5 enviarle token al auth0 para que valide si esta bueno ono.
+
 app.use(jwtCheck)
 app.use(rutasVentas);
 app.use(rutasUsuarios);
